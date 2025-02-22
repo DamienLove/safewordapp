@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.example.app">
+          package="com.safewordapp">
 
     <!-- tools:ignore cannot be used directly on <uses-feature>. Instead, suppress the warning in the lint configuration file or with a comment -->
     <uses-feature
