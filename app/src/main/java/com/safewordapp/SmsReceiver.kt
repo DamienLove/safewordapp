@@ -43,16 +43,20 @@ class SmsReceiver : BroadcastReceiver() {
                     val safeWord1 = prefs.getString("SafeWord1", "") ?: ""
                     val safeWord2 = prefs.getString("SafeWord2", "") ?: ""
 
+                    val isSafeWord1Present = messageBody.contains(safeWord1, ignoreCase = true)
+                    val isSafeWord2Present = messageBody.contains(safeWord2, ignoreCase = true)
+
                     // If message contains either safe word, trigger ringer
-                    if (messageBody.contains(safeWord1, ignoreCase = true) ||
-                        messageBody.contains(safeWord2, ignoreCase = true)) {
+                    if (isSafeWord1Present || isSafeWord2Present) {
 
                         Toast.makeText(context, "SafeWord received from $originatingAddress", Toast.LENGTH_SHORT).show()
 
                         // Trigger EmergencyHandlerService to notify contacts
                         val serviceIntent = Intent(context, EmergencyHandlerService::class.java).apply {
-                            putExtra("detectedSafeWord", if (messageBody.contains(safeWord1, ignoreCase = true)) safeWord1 else safeWord2)
+                            putExtra("detectedSafeWord", if (isSafeWord1Present) safeWord1 else safeWord2)
                         }
+
+
                         context.startService(serviceIntent)
 
                         // Turn on ringer at max volume and ring

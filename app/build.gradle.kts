@@ -39,29 +39,29 @@ android {
 
 dependencies {
     // Kotlin standard library
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.9.22"))
-    implementation("org.jetbrains.kotlin:kotlin-stdlib")
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.9.25"))
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.25")
 
     // AndroidX core and AppCompat
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("androidx.core:core-ktx:1.9.0")
+    implementation("androidx.appcompat:appcompat:1.7.0")
 
     // Material Design components
-    implementation("com.google.android.material:material:1.11.0")
+    implementation("com.google.android.material:material:1.12.0")
 
     // Jetpack Compose dependencies
-    implementation("androidx.compose.ui:ui:1.6.4")
-    implementation("androidx.compose.material3:material3:1.2.1")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+    implementation("androidx.compose.ui:ui:1.7.8")
+    implementation("androidx.compose.material3:material3:1.3.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
 
     // Activity Compose
-    implementation("androidx.activity:activity-compose:1.9.0")
+    implementation("androidx.activity:activity-compose:1.9.3")
 
     // Compose Tooling
-    implementation("androidx.compose.ui:ui-tooling-preview:1.6.4")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.7.8")
     implementation(libs.firebase.crashlytics)
-    debugImplementation("androidx.compose.ui:ui-tooling:1.6.4")
-    implementation("androidx.databinding:databinding-runtime:8.2.0")
+    debugImplementation("androidx.compose.ui:ui-tooling:1.7.8")
+    implementation("androidx.databinding:databinding-runtime:8.6.0")
     // ✅ Google Generative AI Client
 }

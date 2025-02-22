@@ -1,42 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:padding="16dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools">
 
-    <ToggleButton
-        android:id="@+id/SafewordEnable"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textOff="Enable SafeWord"
-        android:textOn="Disable SafeWord" />
+    <data>
 
-    <Button
-        android:id="@+id/recordSafeWordsButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Record SafeWords" />
+    </data>
 
-    <Button
-        android:id="@+id/settingsButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/settings" />
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp"
+            tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/contactButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Emergency Contacts" />
 
-    <Button
-        android:id="@+id/switchModeButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Switch Mode (Incoming/Outgoing)" />
+        <ToggleButton
+                android:id="@+id/SafewordEnable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textOff="Enable SafeWord"
+                android:textOn="Disable SafeWord" />
 
-</LinearLayout>
+        <Button
+                android:id="@+id/recordSafeWordsButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Record SafeWords" />
+
+        <Button
+                android:id="@+id/settingsButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings" />
+
+        <Button
+                android:id="@+id/contactButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Emergency Contacts" />
+
+        <Button
+                android:id="@+id/switchModeButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Switch Mode (Incoming/Outgoing)" />
+
+    </LinearLayout>
+</layout>
