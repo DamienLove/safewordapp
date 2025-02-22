@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.google.firebase.crashlytics)
 }
 
 android {
@@ -58,6 +60,7 @@ dependencies {
 
     // Compose Tooling
     implementation("androidx.compose.ui:ui-tooling-preview:1.6.4")
+    implementation(libs.firebase.crashlytics)
     debugImplementation("androidx.compose.ui:ui-tooling:1.6.4")
     implementation("androidx.databinding:databinding-runtime:8.2.0")
     // ✅ Google Generative AI Client

@@ -2,6 +2,7 @@ package com.safewordapp
 
 import android.app.Service
 import android.content.Intent
+import android.os.Bundle
 import android.os.IBinder
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent

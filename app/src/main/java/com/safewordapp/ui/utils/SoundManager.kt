@@ -3,7 +3,7 @@ package com.safewordapp.utils
 import android.content.Context
 import android.media.AudioManager
 import android.media.MediaPlayer
-import com.safewordapp.R
+
 
 object SoundManager {
 
@@ -15,7 +15,7 @@ object SoundManager {
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0)
 
         mediaPlayer?.release()
-        mediaPlayer = MediaPlayer.create(context, R.raw.alert_sound)
+
         mediaPlayer?.setOnCompletionListener {
             audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currentVolume, 0)
         }

@@ -4,9 +4,6 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
-import com.safewordapp.R
 
 object NotificationHelper {
 
@@ -26,16 +23,13 @@ object NotificationHelper {
         }
     }
 
-    fun sendNotification(context: Context, title: String, message: String) {
-        val builder = NotificationCompat.Builder(context, Constants.CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle(title)
-            .setContentText(message)
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setAutoCancel(true)
-
-        with(NotificationManagerCompat.from(context)) {
-            notify(System.currentTimeMillis().toInt(), builder.build())
-        }
-    }
 }
+
+private fun Unit.setPriority(i: Int) {
+    TODO(reason = "Not yet implemented")
+}
+
+private fun Unit.setContentText(string: String) {
+    TODO("Not yet implemented")
+}
+

@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.telephony.SmsMessage
 import android.widget.Toast
+import com.safeword.RingerManager
 
 /**
  * SmsReceiver is a BroadcastReceiver that listens for incoming SMS messages.
