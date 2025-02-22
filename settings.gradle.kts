@@ -1,23 +1,27 @@
-// settings.gradle.kts in your project root
+// Root-level settings.gradle.kts
 
 pluginManagement {
     repositories {
         google()
         mavenCentral()
-        gradlePluginPortal()
-    }
-    plugins {
-        id("com.android.application") version "8.2.2"
-        kotlin("android") version "1.8.22"
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+        maven("https://jitpack.io")
+        maven("https://maven.google.com")
     }
 }
 
 dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+        maven("https://jitpack.io")
+        maven("https://maven.google.com")
     }
 }
 
-rootProject.name = "SafewordApp"
+rootProject.name = "safewordapp"
+
+// Include your app module
 include(":app")

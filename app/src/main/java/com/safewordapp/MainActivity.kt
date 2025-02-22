@@ -1,27 +1,29 @@
-package com.safeword
+package com.safewordapp
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.widget.Button
 import android.widget.Toast
-import android.widget.ToggleButton
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
+import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import com.safeword.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
 
+    private lateinit var prefs: SharedPreferences
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         // ViewBinding
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // SharedPreferences
-        val prefs = getSharedPreferences("SafeWordPrefs", Context.MODE_PRIVATE)
+        prefs = getSharedPreferences("SafeWordPrefs", Context.MODE_PRIVATE)
 
         // Toggle for enabling SafeWord engine
         binding.SafewordEnable.isChecked = prefs.getBoolean("isSafeWordEnabled", false)
@@ -34,7 +36,9 @@ class MainActivity : AppCompatActivity() {
 
             if (isChecked) {
                 // Start voice recognition, SMS receiving, etc.
-                startService(Intent(this, VoiceRecognitionService::class.java))
+                ContextCompat.startForegroundService(
+                    this, Intent(this, VoiceRecognitionService::class.java).setAction("START")
+                )
                 Toast.makeText(this, "SafeWord enabled", Toast.LENGTH_SHORT).show()
                 testAppFunctionality()
             } else {
@@ -68,9 +72,9 @@ class MainActivity : AppCompatActivity() {
                 putBoolean("isOutgoingMode", newMode)
                 apply()
             }
-            Toast.makeText(this,
-                if (newMode) "Switched to OUTGOING mode"
-                else "Switched to INCOMING mode",
+            Toast.makeText(
+                this,
+                if (newMode) "Switched to OUTGOING mode" else "Switched to INCOMING mode",
                 Toast.LENGTH_SHORT
             ).show()
         }
