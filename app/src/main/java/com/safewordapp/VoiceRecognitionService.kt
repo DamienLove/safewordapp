@@ -13,7 +13,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Locale
 
-class VoiceRecognitionService : Service() {
+class val porcupine = PorcupineManager(
+    accessKey = "YOUR_ACCESS_KEY",
+    keywordPaths = listOf("safe_word_1.ppn", "safe_word_2.ppn"),
+    sensitivity = listOf(0.9f, 0.9f)
+)
+porcupine.process(getAudioFrame())@Override
+public int onStartCommand(Intent intent, int flags, int startId) {
+    // Add code to start the service in the foreground
+    startForeground(NOTIFICATION_ID, notification);
+    return START_STICKY;
+}VoiceRecognitionService : Service() {
 
     private lateinit var speechRecognizer: SpeechRecognizer
     private val coroutineScope = CoroutineScope(Dispatchers.Main)

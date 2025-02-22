@@ -1,90 +1,36 @@
 package com.safewordapp
 
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
-import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
-import androidx.core.content.ContextCompat
-import androidx.core.content.edit
-import com.safeword.databinding.ActivityMainBinding
 
-class MainActivity : ComponentActivity() {
+class private final int SEND_SMS_PERMISSION_CODE = 100;
+private final int CALL_PHONE_PERMISSION_CODE = 101;
 
-    private lateinit var prefs: SharedPreferences
-    private lateinit var binding: ActivityMainBinding
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // ViewBinding
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        // SharedPreferences
-        prefs = getSharedPreferences("SafeWordPrefs", Context.MODE_PRIVATE)
-
-        // Toggle for enabling SafeWord engine
-        binding.SafewordEnable.isChecked = prefs.getBoolean("isSafeWordEnabled", false)
-
-        binding.SafewordEnable.setOnCheckedChangeListener { _, isChecked ->
-            prefs.edit {
-                putBoolean("isSafeWordEnabled", isChecked)
-                apply()
-            }
-
-            if (isChecked) {
-                // Start voice recognition, SMS receiving, etc.
-                ContextCompat.startForegroundService(
-                    this, Intent(this, VoiceRecognitionService::class.java).setAction("START")
-                )
-                Toast.makeText(this, "SafeWord enabled", Toast.LENGTH_SHORT).show()
-                testAppFunctionality()
-            } else {
-                // Stop voice recognition, etc.
-                stopService(Intent(this, VoiceRecognitionService::class.java))
-                Toast.makeText(this, "SafeWord disabled", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        // Button: Record or set SafeWords
-        binding.recordSafeWordsButton.setOnClickListener {
-            // For simplicity, show a toast or open a dedicated activity/fragment
-            Toast.makeText(this, "Would record SafeWords now", Toast.LENGTH_SHORT).show()
-        }
-
-        // Button: Navigate to Settings
-        binding.settingsButton.setOnClickListener {
-            startActivity(Intent(this, SettingsActivity::class.java))
-        }
-
-        // Button: Navigate to ContactActivity
-        binding.contactButton.setOnClickListener {
-            startActivity(Intent(this, ContactActivity::class.java))
-        }
-
-        // Button: Switch between incoming vs outgoing mode
-        binding.switchModeButton.setOnClickListener {
-            val isOutgoing = prefs.getBoolean("isOutgoingMode", false)
-            val newMode = !isOutgoing
-            prefs.edit {
-                putBoolean("isOutgoingMode", newMode)
-                apply()
-            }
-            Toast.makeText(
-                this,
-                if (newMode) "Switched to OUTGOING mode" else "Switched to INCOMING mode",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
+    // Check permissions
+    if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, SEND_SMS_PERMISSION_CODE);
     }
 
-    private fun testAppFunctionality() {
-        // Example test: Check sensitivity or volume setting
-        val prefs = getSharedPreferences("SafeWordPrefs", Context.MODE_PRIVATE)
-        val sensitivity = prefs.getInt("Sensitivity", 50)
-        // Perform a brief check without calling or sending texts
-        Toast.makeText(this, "Testing app at sensitivity: $sensitivity", Toast.LENGTH_SHORT).show()
+    if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, CALL_PHONE_PERMISSION_CODE);
     }
+}
+
+// Handle permission results
+@Override
+public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    if (requestCode == SEND_SMS_PERMISSION_CODE && grantResults.length > 0) {
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            // Permission granted, proceed
+        } else {
+            // Permission denied, show error or fallback
+        }
+    }
+}MainActivity : ComponentActivity() {
+  // redacted
 }

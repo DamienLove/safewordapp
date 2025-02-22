@@ -1,56 +1,32 @@
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.example.app">
 
-    <!-- REQUIRED PERMISSIONS (adjust as needed) -->
+    <!-- tools:ignore cannot be used directly on <uses-feature>. Instead, suppress the warning in the lint configuration file or with a comment -->
     <uses-feature
         android:name="android.hardware.telephony"
-        android:required="true"
-        tools:ignore="UnnecessaryRequiredFeature" />
+        android:required="true" />
 
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
-    <uses-permission android:name="android.permission.READ_SMS"/>
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
     <uses-permission android:name="android.permission.CALL_PHONE"/>
-    <uses-permission android:name="android.permission.SEND_SMS"/>
+<uses-permission android:name="android.permission.SEND_SMS"/>
 
-    <application
-        android:allowBackup="true"
-        android:label="@string/app_name"
-        android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
-        <!-- MAIN ACTIVITY -->
-        <activity android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
 
-        <!-- SETTINGS ACTIVITY -->
-        <activity android:name=".SettingsActivity" />
+        }
 
-        <!-- CONTACT ACTIVITY -->
-        <activity android:name=".ContactActivity" />
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
-        <!-- VOICE RECOGNITION SERVICE -->
-        <service android:name=".VoiceRecognitionService" />
+        }, LOCATION_PERMISSION_CODE);
+        }
 
-        <!-- SMS RECEIVER (for incoming messages) -->
-        <receiver
-            android:name="com.safeword.SmsReceiver"
-            android:exported="true"
-            android:permission="android.permission.BROADCAST_SMS">
-            <intent-filter>
-                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
-            </intent-filter>
-        </receiver>
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, POST_NOTIFICATION_PERMISSION_CODE);
+        }
 
-    </application>
+<uses-permission android:name="android.permission.INTERNET"/>
+
+
+        startActivity(intent);
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+        <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 </manifest>

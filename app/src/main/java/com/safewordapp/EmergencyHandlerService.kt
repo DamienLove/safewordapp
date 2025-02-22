@@ -1,4 +1,30 @@
-package com.safewordapp
+if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+    ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.SEND_SMS), SEND_SMS_PERMISSION_CODE)
+}val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+audioManager.setStreamVolume(AudioManager.STREAM_RING, audioManager.getStreamMaxVolume(AudioManager.STREAM_RING), 0)private suspend fun escalateEmergency(contacts: List<String>, attemptLimit: Int = 3) {
+    for (contact in contacts) {
+        for (attempt in 1..attemptLimit) {
+            try {
+                // Call contact or send SMS
+                SmsManager.getDefault().sendTextMessage(contact, null, message, null, null)
+                delay(3000) // Wait before retry
+                break
+            } catch (e: Exception) {
+                // Retry or continue to next contact
+                if (attempt == attemptLimit) {
+                    continue
+                }
+            }
+        }
+    }
+    // If all fail, escalate to 9-1-1
+    callEmergencyServices()
+}
+
+private fun callEmergencyServices() {
+    val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:911"))
+    startActivity(intent)
+}package com.safewordapp
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -17,7 +43,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class EmergencyHandlerService : Service() {
+class val notificationMessage = NotificationCompat.Builder(this, channelId)
+    .setContentTitle("Emergency!")
+    .setContentText("An emergency call is triggered.")
+    .setPriority(NotificationCompat.PRIORITY_HIGH)
+    .setCategory(Notification.CATEGORY_CALL)
+    .build()EmergencyHandlerService : Service() {
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
     private lateinit var notificationManager: NotificationManagerCompat
