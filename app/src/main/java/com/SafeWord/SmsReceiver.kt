@@ -1,4 +1,4 @@
-package com.safewordapp
+package com.SafeWord
 
 import android.content.BroadcastReceiver
 import android.content.Context

@@ -1,4 +1,4 @@
-package com.safewordapp.utils
+package com.SafeWord.utils
 
 import android.app.Notification
 import android.content.Context

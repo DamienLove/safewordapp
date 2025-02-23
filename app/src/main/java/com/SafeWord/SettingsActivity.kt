@@ -1,12 +1,14 @@
-package com.safewordapp
+package com.SafeWord
 
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.safeword.databinding.ActivitySettingsBinding
+import com.safeword.R
 
 /**
  * SettingsActivity allows users to configure SafeWord settings:
@@ -15,26 +17,35 @@ import com.safeword.databinding.ActivitySettingsBinding
  */
 class SettingsActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivitySettingsBinding
     private lateinit var prefs: SharedPreferences
+    private lateinit var etSafeWord1: EditText
+    private lateinit var etSafeWord2: EditText
+    private lateinit var etSensitivity: EditText
+    private lateinit var btnSave: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySettingsBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_settings)
 
+        // Initialize SharedPreferences
         prefs = getSharedPreferences("SafeWordPrefs", MODE_PRIVATE)
 
+        // Initialize views using findViewById
+        etSafeWord1 = findViewById(R.id.etSafeWord1)
+        etSafeWord2 = findViewById(R.id.etSafeWord2)
+        etSensitivity = findViewById(R.id.etSensitivity)
+        btnSave = findViewById(R.id.btnSave)
+
         // Load existing data into text fields
-        binding.etSafeWord1.setText(prefs.getString("SafeWord1", ""))
-        binding.etSafeWord2.setText(prefs.getString("SafeWord2", ""))
-        binding.etSensitivity.setText(prefs.getInt("Sensitivity", 50).toString())
+        etSafeWord1.setText(prefs.getString("SafeWord1", ""))
+        etSafeWord2.setText(prefs.getString("SafeWord2", ""))
+        etSensitivity.setText(prefs.getInt("Sensitivity", 50).toString())
 
         // Save button logic
-        binding.btnSave.setOnClickListener {
-            val safeWord1 = binding.etSafeWord1.text.toString().trim()
-            val safeWord2 = binding.etSafeWord2.text.toString().trim()
-            val sensitivity = binding.etSensitivity.text.toString().toIntOrNull() ?: 50
+        btnSave.setOnClickListener {
+            val safeWord1 = etSafeWord1.text.toString().trim()
+            val safeWord2 = etSafeWord2.text.toString().trim()
+            val sensitivity = etSensitivity.text.toString().toIntOrNull() ?: 50
 
             if (safeWord1.isNotEmpty() && safeWord2.isNotEmpty() && sensitivity in 1..100) {
                 prefs.edit().apply {
@@ -50,9 +61,10 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
     }
+
     fun onTestModeClick(view: View) {
         val intent = Intent(this, EmergencyHandlerService::class.java)
         intent.putExtra("detectedSafeWord", "Test Mode Triggered")
         startService(intent)
-        }
     }
+}

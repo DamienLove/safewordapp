@@ -1,4 +1,4 @@
-package com.safewordapp.utils
+package com.SafeWord.utils
 
 import android.app.Activity
 import android.content.pm.PackageManager

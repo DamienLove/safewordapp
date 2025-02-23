@@ -1,4 +1,4 @@
-package com.safewordapp.utils
+package com.SafeWord.utils
 
 import android.content.Context
 import android.content.SharedPreferences

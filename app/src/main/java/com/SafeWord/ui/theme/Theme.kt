@@ -1,4 +1,4 @@
-package com.safewordapp.ui.theme
+package com.SafeWord.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

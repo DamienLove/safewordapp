@@ -21,7 +21,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "safewordapp"
+rootProject.name = "SafeWord"
 
 // Include your app module
 include(":app")

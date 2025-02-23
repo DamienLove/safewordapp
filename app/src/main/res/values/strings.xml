@@ -10,4 +10,18 @@
     <string name="results_placeholder">(Results will appear here)</string>
     <string name="settings">Settings</string>
     <string name="save_back">Save &amp; Back</string>
+    <string name="contact_name">Contact Name</string>
+    <string name="contact_number">Contact Number</string>
+    <string name="contact_email">Contact Email</string>
+    <string name="enter_safe_word_1">Enter Safe Word 1</string>
+    <string name="enter_safe_word_2">Enter Safe Word 2</string>
+    <string name="enter_sensitivity_1_100">Enter Sensitivity (1–100)</string>
+    <string name="test_mode">Test Mode</string>
+    <string name="enable_safeword">Enable SafeWord</string>
+    <string name="record_safewords">Record SafeWords</string>
+    <string name="disable_safeword">Disable SafeWord</string>
+    <string name="switch_mode_incoming_outgoing">Switch Mode (Incoming/Outgoing)</string>
+    <string name="emergency_contacts">Emergency Contacts</string>
+    <string name="contacts">contacts</string>
+    <string name="mode">Mode</string>
 </resources>

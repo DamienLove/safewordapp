@@ -1,18 +1,15 @@
-package com.safewordapp
+package com.SafeWord
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.res.Resources
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ToggleButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-
-
+import com.safeword.R
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -28,13 +25,17 @@ class MainActivity : AppCompatActivity() {
         checkAndRequestPermissions()
 
         // Enable or Disable Safe Word Listening
-        var SafeWordEnable = if (lastNonConfigurationInstance == 1) 1 else 0
-        val toggleSafeWordButton: ToggleButton = findViewById(SafeWordEnable)
-        toggleSafeWordButton.setOnCheckedChangeListener { _, isChecked ->
+        val switchModeButton: Button = findViewById(R.id.switchModeButton)
+        val prefs = getSharedPreferences("SafeWordPrefs", MODE_PRIVATE)
+        val safeWordEnable = prefs.getBoolean("SafeWordEnable", false)
+        switchModeButton.isSelected = safeWordEnable
+
+        (switchModeButton as ToggleButton).setOnCheckedChangeListener { _, isChecked ->
+            prefs.edit().putBoolean("SafeWordEnable", isChecked).apply()
             if (isChecked) {
-                // Start voice recognition service
+                // Start voice recognition service using foreground service
                 val intent = Intent(this, VoiceRecognitionService::class.java)
-                startService(intent)
+                ContextCompat.startForegroundService(this, intent)
             } else {
                 // Stop voice recognition service
                 stopService(Intent(this, VoiceRecognitionService::class.java))
@@ -53,7 +54,6 @@ class MainActivity : AppCompatActivity() {
 
         // Switch between Incoming/Outgoing mode
         findViewById<Button>(R.id.switchModeButton).setOnClickListener {
-            val prefs = getSharedPreferences("SafeWordPrefs", MODE_PRIVATE)
             val isOutgoingMode = prefs.getBoolean("isOutgoingMode", false)
             prefs.edit().putBoolean("isOutgoingMode", !isOutgoingMode).apply()
         }
@@ -65,36 +65,40 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Check and request all necessary permissions.
+     */
     private fun checkAndRequestPermissions() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.SEND_SMS), SEND_SMS_PERMISSION_CODE)
+        val requiredPermissions = arrayOf(
+            Manifest.permission.RECEIVE_SMS,
+            Manifest.permission.SEND_SMS,
+            Manifest.permission.MODIFY_AUDIO_SETTINGS
+        )
+        val missingPermissions = requiredPermissions.filter {
+            ContextCompat.checkSelfPermission(this, it) != PackageManager.PERMISSION_GRANTED
         }
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CALL_PHONE), CALL_PHONE_PERMISSION_CODE)
+        if (missingPermissions.isNotEmpty()) {
+            ActivityCompat.requestPermissions(
+                this,
+                missingPermissions.toTypedArray(),
+                0 // Use an appropriate request code
+            )
         }
     }
 
-    // Handle permission results
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    // Handle the result for permissions
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            SEND_SMS_PERMISSION_CODE -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // SEND_SMS permission granted
-                } else {
-                    // Permission denied, handle accordingly
-                }
-            }
-            CALL_PHONE_PERMISSION_CODE -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // CALL_PHONE permission granted
-                } else {
-                    // Permission denied, handle accordingly
-                }
+
+        for ((index, result) in grantResults.withIndex()) {
+            if (result != PackageManager.PERMISSION_GRANTED) {
+                // Notify the user that permission is required
+                // You might choose to retry the permission request or inform the user that some features won't work.
             }
         }
     }
 }
-
-

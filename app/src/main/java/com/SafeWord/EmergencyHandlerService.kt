@@ -1,8 +1,9 @@
-package com.safewordapp
+package com.SafeWord
 
 import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -15,16 +16,15 @@ import android.os.Build
 import android.os.IBinder
 import android.telephony.SmsManager
 import android.widget.Toast
+import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.safeword.R
+import kotlinx.coroutines.*
 
 class EmergencyHandlerService : Service() {
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
+    private val channelId = "EMERGENCY_CHANNEL"
 
     override fun onCreate() {
         super.onCreate()
@@ -68,18 +68,7 @@ class EmergencyHandlerService : Service() {
         contacts.forEach { contactNumber ->
             repeat(attemptLimit) {
                 try {
-                    val callIntent = Intent(Intent.ACTION_CALL).apply {
-                        data = Uri.parse("tel:$contactNumber")
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    }
-                    if (ContextCompat.checkSelfPermission(this@EmergencyHandlerService, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
-                        startActivity(callIntent)
-                    } else {
-                        withContext(Dispatchers.Main) {
-                            Toast.makeText(applicationContext, "Call Phone permission not granted.", Toast.LENGTH_SHORT).show()
-                        }
-                        return@forEach
-                    }
+                    sendSms(contactNumber, message)
                     delay(5000L)
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -87,42 +76,41 @@ class EmergencyHandlerService : Service() {
             }
         }
 
-        callEmergencyServices()
+        notifyUserToCallEmergencyServices()
     }
 
-    private fun callEmergencyServices() {
-        val emergencyNumber = "911"
-        val callIntent = Intent(Intent.ACTION_CALL).apply {
-            data = Uri.parse("tel:$emergencyNumber")
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        }
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
-            startActivity(callIntent)
+    private fun sendSms(phoneNumber: String, message: String) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
+            SmsManager.getDefault().sendTextMessage(phoneNumber, null, message, null, null)
         } else {
-            Toast.makeText(applicationContext, "Call Phone permission not granted.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "SMS permission not granted.", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private suspend fun sendEmergencySms(safeWord: String) {
-        val prefs = getSharedPreferences("SafeWordPrefs", MODE_PRIVATE)
-        val contacts = prefs.getStringSet("emergencyContacts", emptySet()) ?: emptySet()
-        val location = getUserLocation()
-
-        val message = if (location != null) {
-            "SafeWord '$safeWord' detected. Location: https://maps.google.com/?q=${location.latitude},${location.longitude}"
-        } else {
-            "SafeWord '$safeWord' detected. Location unavailable."
+    private fun notifyUserToCallEmergencyServices() {
+        val callIntent = Intent(Intent.ACTION_DIAL).apply {
+            data = Uri.parse("tel:911")
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
 
-        contacts.forEach { phoneNumber ->
-            try {
-                SmsManager.getDefault().sendTextMessage(phoneNumber, null, message, null, null)
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(applicationContext, "Failed to send SMS to $phoneNumber", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
+        val pendingIntent = PendingIntent.getActivity(
+            this,
+            0,
+            callIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val notification = NotificationCompat.Builder(this, channelId)
+            .setSmallIcon(R.drawable.ic_emergency)
+            .setContentTitle("Emergency Detected")
+            .setContentText("Tap to call emergency services.")
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
+            .build()
+
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.notify(1, notification)
     }
 
     private fun getUserLocation(): Location? {
@@ -144,7 +132,7 @@ class EmergencyHandlerService : Service() {
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
-                "EMERGENCY_CHANNEL",
+                channelId,
                 "Emergency Notifications",
                 NotificationManager.IMPORTANCE_HIGH
             ).apply {
@@ -152,4 +140,11 @@ class EmergencyHandlerService : Service() {
             }
 
             val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-            manager.createNotificat
+            manager.createNotificationChannel(channel)
+        }
+    }
+
+    override fun onBind(intent: Intent?): IBinder? {
+        return null
+    }
+}

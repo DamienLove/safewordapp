@@ -1,4 +1,4 @@
-package com.safewordapp
+package com.SafeWord
 
 import android.annotation.SuppressLint
 import android.app.Notification
@@ -17,7 +17,7 @@ import android.widget.Toast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.Locale
+import java.util.*
 
 class VoiceRecognitionService : Service() {
     companion object {

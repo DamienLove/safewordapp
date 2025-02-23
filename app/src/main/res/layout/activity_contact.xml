@@ -1,38 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--suppress ALL -->
 <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ContactActivity"
-    android:padding="16dp">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.SafeWord.ContactActivity"
+        android:padding="16dp">
 
     <EditText
-        android:id="@+id/etContactName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Contact Name" />
+            android:id="@+id/etContactName"
+            android:layout_width="177dp"
+            android:layout_height="84dp"
+            android:hint="@string/contact_name"
+            android:inputType="textPersonName"
+            android:autofillHints="name"/>
 
     <EditText
-        android:id="@+id/etContactNumber"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Contact Number"
-        android:inputType="phone" />
+            android:id="@+id/etContactNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="77dp"
+            android:hint="@string/contact_number"
+            android:inputType="phone"
+            android:autofillHints="phone"/>
 
     <EditText
-        android:id="@+id/etContactEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Contact Email"
-        android:inputType="textEmailAddress" />
+            android:id="@+id/etContactEmail"
+            android:layout_width="164dp"
+            android:layout_height="121dp"
+            android:autofillHints="emailAddress"
+            android:hint="@string/contact_email"
+            android:inputType="textEmailAddress"
+            android:enabled="true"
+            android:textIsSelectable="true"/>
 
     <Button
-        android:id="@+id/btnSaveContact"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Save &amp; Back"
-        android:layout_marginTop="16dp" />
+            android:id="@+id/btnSaveContact"
+            android:layout_width="161dp"
+            android:layout_height="wrap_content"
+            android:text="@string/save_back"
+            android:layout_marginTop="16dp"
+            android:clickable="true"/>
 </LinearLayout>

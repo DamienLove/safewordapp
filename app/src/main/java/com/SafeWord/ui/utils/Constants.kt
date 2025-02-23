@@ -1,4 +1,4 @@
-package com.safewordapp.utils
+package com.SafeWord.utils
 
 object Constants {
     const val PREFS_NAME = "SafeWordPrefs"

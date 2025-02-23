@@ -1,8 +1,8 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.safewordapp">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Permissions -->
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <!-- Features -->
-    <uses-feature android:name="android.hardware.telephony" android:required="true" />
+    <uses-feature android:name="android.hardware.telephony" android:required="false" />
 
     <application
             android:allowBackup="true"
@@ -20,7 +20,7 @@
             android:supportsRtl="true">
 
         <!-- Main Activity -->
-        <activity android:name=".MainActivity"
+        <activity android:name="com.SafeWord.MainActivity"
                   android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,7 +29,7 @@
         </activity>
 
         <!-- Voice Recognition Service -->
-        <service android:name=".VoiceRecognitionService" />
+        <service android:name="com.SafeWord.VoiceRecognitionService" />
 
         <!-- Other components like additional activities or services -->
     </application>

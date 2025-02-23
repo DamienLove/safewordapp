@@ -1,4 +1,4 @@
-package com.safewordapp
+package com.SafeWord
 
 /**
  * A sealed hierarchy describing the state of the text generation.

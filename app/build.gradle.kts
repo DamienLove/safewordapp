@@ -18,7 +18,7 @@ android {
     }
 
     buildFeatures {
-        viewBinding = false
+        viewBinding = true
         dataBinding = true
         compose = true
     }
@@ -61,6 +61,13 @@ dependencies {
     // Compose Tooling
     implementation("androidx.compose.ui:ui-tooling-preview:1.7.8")
     implementation(libs.firebase.crashlytics)
+    implementation(libs.androidx.monitor)
+    implementation(libs.androidx.junit.ktx)
+    testImplementation(libs.junit.junit)
+    testImplementation(libs.junit.junit)
+    androidTestImplementation(libs.junit.junit)
+    androidTestImplementation(libs.junit.junit)
+    androidTestImplementation(libs.junit.junit)
     debugImplementation("androidx.compose.ui:ui-tooling:1.7.8")
     implementation("androidx.databinding:databinding-runtime:8.6.0")
     // ✅ Google Generative AI Client
