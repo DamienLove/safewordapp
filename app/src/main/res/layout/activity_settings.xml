@@ -1,45 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp">
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
 
     <EditText
             android:id="@+id/etSafeWord1"
-            android:layout_width="320dp"
-            android:layout_height="86dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:hint="@string/enter_safe_word_1"
             android:autofillHints="text"
             android:inputType="text"/>
 
     <EditText
             android:id="@+id/etSafeWord2"
-            android:layout_width="308dp"
-            android:layout_height="150dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:hint="@string/enter_safe_word_2"
             android:inputType="text"
             android:autofillHints="text"/>
 
     <EditText
             android:id="@+id/etSensitivity"
-            android:layout_width="320dp"
-            android:layout_height="150dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:hint="@string/enter_sensitivity_1_100"
             android:inputType="number"
             android:autofillHints="text"/>
 
     <Button
             android:id="@+id/testModeButton"
-            android:layout_width="125dp"
-            android:layout_height="90dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/test_mode"
             android:onClick="onTestModeClick"/>
 
     <Button
             android:id="@+id/btnSave"
-            android:layout_width="140dp"
-            android:layout_height="146dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/save_back"/>
 </LinearLayout>

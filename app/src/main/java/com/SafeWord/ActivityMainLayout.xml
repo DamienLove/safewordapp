@@ -1,0 +1,32 @@
+   <!-- res/layout/activity_main.xml -->
+   <androidx.constraintlayout.widget.ConstraintLayout
+       xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:app="http://schemas.android.com/apk/res-auto"
+       xmlns:tools="http://schemas.android.com/tools"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       tools:context=".MainActivity">
+
+       <!-- Example UI components -->
+       <androidx.appcompat.widget.Toolbar
+           android:id="@+id/toolbar"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           app:layout_constraintTop_toTopOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintEnd_toEndOf="parent"
+           android:background="?attr/colorPrimary"
+           android:title="AppCompat Toolbar"
+           android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+       <Button
+           android:id="@+id/btn_example"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_marginTop="20dp"
+           android:text="Example Button"
+           app:layout_constraintTop_toBottomOf="@id/toolbar"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintEnd_toEndOf="parent" />
+
+   </androidx.constraintlayout.widget.ConstraintLayout>

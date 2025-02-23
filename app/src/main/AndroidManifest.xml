@@ -17,15 +17,28 @@
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
             android:roundIcon="@mipmap/ic_launcher_round"
-            android:supportsRtl="true">
+            android:supportsRtl="true"
+            android:theme="@style/Theme.AppCompat.Light">
+        >
+
 
         <!-- Main Activity -->
         <activity android:name="com.SafeWord.MainActivity"
-                  android:exported="true">
+                  android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+                android:name="com.SafeWord.SettingsActivity"
+                android:label="@string/settings"
+                android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
         </activity>
 
         <!-- Voice Recognition Service -->

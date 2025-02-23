@@ -3,13 +3,12 @@ package com.SafeWord
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Bundle
 import android.widget.Button
-import android.widget.ToggleButton
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.safeword.R
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -30,9 +29,10 @@ class MainActivity : AppCompatActivity() {
         val safeWordEnable = prefs.getBoolean("SafeWordEnable", false)
         switchModeButton.isSelected = safeWordEnable
 
-        (switchModeButton as ToggleButton).setOnCheckedChangeListener { _, isChecked ->
-            prefs.edit().putBoolean("SafeWordEnable", isChecked).apply()
-            if (isChecked) {
+        switchModeButton.setOnClickListener {
+            val currentState = prefs.getBoolean("SafeWordEnable", false)
+            prefs.edit().putBoolean("SafeWordEnable", !currentState).apply()
+            if (!currentState) {
                 // Start voice recognition service using foreground service
                 val intent = Intent(this, VoiceRecognitionService::class.java)
                 ContextCompat.startForegroundService(this, intent)

@@ -1,42 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    tools:context="com.SafeWord.MainActivity">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp"
+        tools:context="com.SafeWord.MainActivity">
 
 
-        <ToggleButton
-                android:id="@+id/SafewordEnable"
-                android:layout_width="wrap_content"
-                android:layout_height="87dp"
-                android:textOff="@string/enable_safeword"
-                android:textOn="@string/disable_safeword"/>
+    <ToggleButton
+            android:id="@+id/safeWordToggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOff="@string/enable_safeword"
+            android:textOn="@string/disable_safeword"/>
 
-        <Button
-                android:id="@+id/recordSafeWordsButton"
-                android:layout_width="219dp"
-                android:layout_height="100dp"
-                android:text="@string/record_safewords"/>
+    <Button
+            android:id="@+id/recordSafeWordsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/record_safewords"/>
 
-        <Button
-                android:id="@+id/settingsButton"
-                android:layout_width="202dp"
-                android:layout_height="87dp"
-                android:text="@string/settings"/>
+    <Button
+            android:id="@+id/settingsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/settings"/>
 
-        <Button
-                android:id="@+id/contactButton"
-                android:layout_width="254dp"
-                android:layout_height="123dp"
-                android:text="@string/contacts"/>
+    <Button
+            android:id="@+id/contactButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/contacts"/>
 
-        <Button
-                android:id="@+id/switchModeButton"
-                android:layout_width="222dp"
-                android:layout_height="105dp"
-                android:text="@string/mode"/>
+    <Button
+            android:id="@+id/switchModeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mode"/>
 
 </LinearLayout>
