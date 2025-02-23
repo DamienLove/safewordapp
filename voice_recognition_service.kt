@@ -1,45 +1,90 @@
-  class VoiceRecognitionService : Service(), RecognitionListener {
-      private lateinit var speechRecognizer: SpeechRecognizer
-      private lateinit var recognizerIntent: Intent
+package com.safewordapp
 
-      override fun onCreate() {
-          super.onCreate()
-          speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this)
-          recognizerIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
-              putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
-              putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
-          }
-          speechRecognizer.setRecognitionListener(this)
-      }
+import android.app.Service
+import android.content.Intent
+import android.content.SharedPreferences
+import android.os.Bundle
+import android.os.IBinder
+import android.speech.RecognitionListener
+import android.speech.RecognizerIntent
+import android.speech.SpeechRecognizer
+import android.widget.Toast
+import androidx.preference.PreferenceManager
+import java.util.Locale
 
-      override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-          startListening()
-          return START_STICKY
-      }
+class VoiceRecognitionService : Service(), RecognitionListener {
+    private lateinit var speechRecognizer: SpeechRecognizer
+    private lateinit var recognizerIntent: Intent
 
-      private fun startListening() {
-          try {
-              speechRecognizer.startListening(recognizerIntent)
-          } catch (e: Exception) {
-              Toast.makeText(applicationContext, "Speech service failure: ${e.message}", Toast.LENGTH_SHORT).show()
-          }
-      }
+    override fun onCreate() {
+        super.onCreate()
+        initializeSpeechRecognizer()
+    }
 
-      override fun onResults(results: Bundle?) {
-          val matches = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
-          if (matches != null && matches.contains("YOUR SAFE WORD")) {
-              // Process match
-              val intent = Intent(this, EmergencyHandlerService::class.java)
-              intent.putExtra("detectedSafeWord", "Safe Word Detected")
-              startService(intent)
-          }
-          startListening() // Resume passive listening
-      }
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        startListening()
+        return START_STICKY
+    }
 
-      override fun onDestroy() {
-          super.onDestroy()
-          speechRecognizer.destroy()
-      }
+    private fun initializeSpeechRecognizer() {
+        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this)
+        recognizerIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+            putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+            putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+        }
+        speechRecognizer.setRecognitionListener(this)
+    }
 
-      override fun onBind(intent: Intent?): IBinder? = null
-  }
+    private fun startListening() {
+        try {
+            speechRecognizer.startListening(recognizerIntent)
+        } catch (e: Exception) {
+            Toast.makeText(applicationContext, "Speech service failure: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onResults(results: Bundle?) {
+        val matches = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
+        matches?.let {
+            for (detectedText in it) {
+                checkSafeWord(detectedText)
+            }
+        }
+        startListening() // Resume listening for continuous recognition
+    }
+
+    private fun checkSafeWord(detectedText: String) {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        val safeWord1 = prefs.getString("SafeWord1", "")
+        val safeWord2 = prefs.getString("SafeWord2", "")
+
+        val isSafeWord1 = detectedText.contains(safeWord1 ?: "", ignoreCase = true)
+        val isSafeWord2 = detectedText.contains(safeWord2 ?: "", ignoreCase = true)
+
+        if (isSafeWord1 || isSafeWord2) {
+            val intent = Intent(this, EmergencyHandlerService::class.java).apply {
+                putExtra("detectedSafeWord", if (isSafeWord1) safeWord1 else safeWord2)
+            }
+            startService(intent)
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        speechRecognizer.destroy()
+    }
+
+    override fun onBind(intent: Intent?): IBinder? = null
+
+    // Implement other RecognitionListener methods as needed
+    override fun onReadyForSpeech(params: Bundle?) {}
+    override fun onBeginningOfSpeech() {}
+    override fun onRmsChanged(rmsdB: Float) {}
+    override fun onBufferReceived(buffer: ByteArray?) {}
+    override fun onEndOfSpeech() {}
+    override fun onError(error: Int) {
+        startListening() // Restart listening on error to maintain continuous recognition
+    }
+    override fun onPartialResults(partialResults: Bundle?) {}
+    override fun onEvent(eventType: Int, params: Bundle?) {}
+}
