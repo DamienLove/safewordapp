@@ -24,4 +24,5 @@
     <string name="emergency_contacts">Emergency Contacts</string>
     <string name="contacts">contacts</string>
     <string name="mode">Mode</string>
+    <string name="add_contact">Add Contact</string>
 </resources>

@@ -2,9 +2,6 @@
 <project version="4">
   <component name="deploymentTargetSelector">
     <selectionStates>
-      <SelectionState runConfigName="app">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
       <SelectionState runConfigName="SafeWord.app">
         <option name="selectionMode" value="DROPDOWN" />
         <DropdownSelection timestamp="2025-02-23T09:31:14.254925600Z">
