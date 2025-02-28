@@ -5,7 +5,6 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
@@ -18,7 +17,7 @@ import android.telephony.SmsManager
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-import com.safeword.R
+import com.safeword.application.R
 import kotlinx.coroutines.*
 
 class EmergencyHandlerService : Service() {
@@ -58,7 +57,7 @@ class EmergencyHandlerService : Service() {
     }
 
     private suspend fun escalateEmergency(contacts: List<String>, message: String, attemptLimit: Int = 3) {
-        val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        val audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
         audioManager.setStreamVolume(
             AudioManager.STREAM_RING,
             audioManager.getStreamMaxVolume(AudioManager.STREAM_RING),
@@ -109,7 +108,7 @@ class EmergencyHandlerService : Service() {
             .setAutoCancel(true)
             .build()
 
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(1, notification)
     }
 

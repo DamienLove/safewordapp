@@ -6,7 +6,7 @@ import android.content.pm.PackageManager
 import android.widget.Button
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.safeword.R
+import com.safeword.application.R
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-        for ((index, result) in grantResults.withIndex()) {
+        for ((_, result) in grantResults.withIndex()) {
             if (result != PackageManager.PERMISSION_GRANTED) {
                 // Notify the user that permission is required
                 // You might choose to retry the permission request or inform the user that some features won't work.
